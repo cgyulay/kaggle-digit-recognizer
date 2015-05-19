@@ -259,9 +259,9 @@ class NN():
         print('\nEpoch %d of %d took %.1fs\nTest accuracy: %.2f%%' % ((epoch + 1), n_epochs, (end_time - start_time), (total_test_accuracy * 100)))
 
         # Reduce learning rate periodocially
-        # if (epoch + 1) % 25 == 0:
-        #   self.lr /= 10
-        #   print('Reducing learning rate to %f.' % self.lr)
+        if (epoch + 1) % 25 == 0:
+          self.lr /= 10
+          print('Reducing learning rate to %f.' % self.lr)
 
         # Save weights for competition testing
         if (epoch + 1) % n_epochs == 0:
@@ -278,11 +278,15 @@ class NN():
       predictions = predict(test_set_x.eval())
 
       save_path = os.path.join(data_path, 'predictions.csv')
-      f = open(save_path, 'w')
       print('Saving predictions to %s' % save_path)
 
+      f = open(save_path, 'w')
+      f.write('ImageId,Label\n')
+
+      count = 0
       for pred in predictions:
-        f.write('%d\n' % pred)
+        count += 1
+        f.write('{0},{1}\n'.format(count, pred))
 
       f.close()
 
@@ -384,9 +388,13 @@ def init_weights(shape):
 # Run
 
 if __name__ == '__main__':
+  lr = 0.0001
+  regularization = 'dropout'
+  n_epochs = 30
+
   # Train
-  NN(lr=0.0001, regularization='dropout', n_epochs=5)
+  # NN(lr=lr, regularization=regularization, n_epochs=n_epochs)
 
   # Run
-  # NN(lr=0.0001, regularization='dropout', n_epochs=30, test=True)
+  NN(lr=lr, regularization=regularization, test=True)
 
