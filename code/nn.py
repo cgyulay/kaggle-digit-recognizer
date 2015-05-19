@@ -98,7 +98,6 @@ class SoftmaxLayer():
       self.input_dropout = dropout(input_dropout, p_dropout, rng)
       self.output_dropout = softmax(T.dot(input_dropout, self.w) + self.b)
 
-    # self.output = a if uses_dropout else b
     self.output = softmax((1 - self.p_dropout) * T.dot(self.input, self.w) + self.b)
     self.y_pred = T.argmax(self.output, axis=1)
     self.params = [self.w, self.b]
@@ -278,7 +277,7 @@ class NN():
       predictions = predict(test_set_x.eval())
 
       save_path = os.path.join(data_path, 'predictions.csv')
-      print('Saving predictions to %s' % save_path)
+      print('Saving predictions to %s.' % save_path)
 
       f = open(save_path, 'w')
       f.write('ImageId,Label\n')
