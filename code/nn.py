@@ -11,7 +11,7 @@ from theano import config
 
 config.mode='FAST_COMPILE'
 config.floatX='float32'
-data_path = os.path.join(os.path.split(__file__)[0], "..", "data")
+data_path = os.path.join(os.path.split(__file__)[0], '..', 'data')
 
 
 # Activations
@@ -336,6 +336,7 @@ def save_weights(layers):
 def load_saved_weights():
   weights_path = os.path.join(data_path, 'weights.pkl')
   return cPickle.load(open(weights_path, 'rb'))
+
 
 # Gradient
 
