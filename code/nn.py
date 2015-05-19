@@ -106,7 +106,7 @@ class SoftmaxLayer():
 
 class NN():
 
-  def __init__(self, lr=0.5, batch_size=100, n_hidden=500, n_epochs=100, test=False, regularization=None, L1_reg=0.01, L2_reg=0.0001):
+  def __init__(self, lr=0.5, batch_size=100, n_hidden=2000, n_epochs=100, test=False, regularization=None, L1_reg=0.01, L2_reg=0.0001):
     self.lr = lr
     self.batch_size = batch_size
     self.n_epochs = n_epochs
@@ -393,7 +393,7 @@ if __name__ == '__main__':
   n_epochs = 30
 
   # Train
-  # NN(lr=lr, regularization=regularization, n_epochs=n_epochs)
+  NN(lr=lr, regularization=regularization, n_epochs=n_epochs)
 
   # Run
   NN(lr=lr, regularization=regularization, test=True)
