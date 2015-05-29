@@ -52,7 +52,17 @@ def mse(pred, y):
 
 class ConnectedLayer():
 
-  def __init__(self, input, n_in, n_out, rng, activation=relu, p_dropout=0.0, w=None, b=None, input_dropout=None):
+  def __init__(self,
+    input,
+    n_in,
+    n_out,
+    rng,
+    activation=relu,
+    p_dropout=0.0,
+    w=None,
+    b=None,
+    input_dropout=None):
+
     self.input = input
     self.n_in = n_in
     self.n_out = n_out
@@ -79,7 +89,16 @@ class ConnectedLayer():
 
 class SoftmaxLayer():
 
-  def __init__(self, input, n_in, n_out, rng=np.random.RandomState(1234), p_dropout=0.0, w=None, b=None, input_dropout=None):
+  def __init__(self,
+    input,
+    n_in,
+    n_out,
+    rng=np.random.RandomState(1234),
+    p_dropout=0.0,
+    w=None,
+    b=None,
+    input_dropout=None):
+
     self.input = input
     self.n_in = n_in
     self.n_out = n_out
@@ -105,7 +124,16 @@ class SoftmaxLayer():
 
 class NN():
 
-  def __init__(self, lr=0.5, batch_size=100, n_hidden=2000, n_epochs=100, test=False, regularization=None, L1_reg=0.01, L2_reg=0.0001):
+  def __init__(self,
+    lr=0.5,
+    batch_size=100,
+    n_hidden=1000,
+    n_epochs=100,
+    test=False,
+    regularization=None,
+    L1_reg=0.0,
+    L2_reg=0.0001):
+
     self.lr = lr
     self.batch_size = batch_size
     self.n_epochs = n_epochs
@@ -118,7 +146,8 @@ class NN():
       test_set_x, test_set_y = datasets[1]
 
       # Initialize blank weights and biases
-      w_b = [[None, None], [None, None], [None, None]]
+      w_b = [[None, None], [None, None], [None, None],
+        [None, None], [None, None]]
 
       # Number of minibatches
       n_train_batches = len(train_set_x.get_value(borrow=True)) / batch_size
@@ -176,19 +205,43 @@ class NN():
       b=w_b[1][1]
     )
 
-    softmax = SoftmaxLayer(
+    h3 = ConnectedLayer(
       input=h2.output,
       input_dropout=h2.output_dropout,
       n_in=n_hidden,
-      n_out=n_output_classes,
+      n_out=n_hidden,
       rng=rng,
+      activation=relu,
+      p_dropout=p_dropout_hidden,
+      w=w_b[1][0],
+      b=w_b[1][1]
+    )
+
+    h4 = ConnectedLayer(
+      input=h3.output,
+      input_dropout=h3.output_dropout,
+      n_in=n_hidden,
+      n_out=n_hidden,
+      rng=rng,
+      activation=relu,
       p_dropout=p_dropout_hidden,
       w=w_b[2][0],
       b=w_b[2][1]
     )
 
+    softmax = SoftmaxLayer(
+      input=h4.output,
+      input_dropout=h4.output_dropout,
+      n_in=n_hidden,
+      n_out=n_output_classes,
+      rng=rng,
+      p_dropout=p_dropout_hidden,
+      w=w_b[3][0],
+      b=w_b[3][1]
+    )
+
     # It looks ridiculous but just flattens all layer params into one list
-    self.layers = [h1, h2, softmax]
+    self.layers = [h1, h2, h3, h4, softmax]
     params = [layer.params for layer in self.layers]
     self.params = [param for subparams in params for param in subparams]
 
