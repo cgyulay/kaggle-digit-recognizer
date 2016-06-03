@@ -213,8 +213,8 @@ class NN():
       rng=rng,
       activation=relu,
       p_dropout=p_dropout_hidden,
-      w=w_b[1][0],
-      b=w_b[1][1]
+      w=w_b[2][0],
+      b=w_b[2][1]
     )
 
     h4 = ConnectedLayer(
@@ -225,8 +225,8 @@ class NN():
       rng=rng,
       activation=relu,
       p_dropout=p_dropout_hidden,
-      w=w_b[2][0],
-      b=w_b[2][1]
+      w=w_b[3][0],
+      b=w_b[3][1]
     )
 
     softmax = SoftmaxLayer(
@@ -236,8 +236,8 @@ class NN():
       n_out=n_output_classes,
       rng=rng,
       p_dropout=p_dropout_hidden,
-      w=w_b[3][0],
-      b=w_b[3][1]
+      w=w_b[4][0],
+      b=w_b[4][1]
     )
 
     # It looks ridiculous but just flattens all layer params into one list
@@ -443,7 +443,7 @@ def init_weights(shape):
 if __name__ == '__main__':
   lr = 0.0001
   regularization = 'dropout'
-  n_epochs = 30
+  n_epochs = 20
 
   # Train
   NN(lr=lr, regularization=regularization, n_epochs=n_epochs)
